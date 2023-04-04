@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://pycodebook.zhengqiao.wang/blog</id>
-    <title>PyCodeBook Blog</title>
+    <title>跟着项目学Python Blog</title>
     <updated>2021-08-26T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://pycodebook.zhengqiao.wang/blog"/>
-    <subtitle>PyCodeBook Blog</subtitle>
+    <subtitle>跟着项目学Python Blog</subtitle>
     <icon>https://pycodebook.zhengqiao.wang/img/favicon.ico</icon>
     <entry>
         <title type="html"><![CDATA[Welcome]]></title>

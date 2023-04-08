@@ -15,7 +15,11 @@ sidebar_position: 1
 - 和你现在所安装的Python版本不一致的问题
 :::
 
-如果条件允许，建议使用[`anaconda`](https://www.anaconda.com/)或者[`miniconda`](https://docs.conda.io/en/latest/miniconda.html)之类的版本管理器来帮助你隔离和控制Python版本。当然，如果你希望比较简单地使用Python，那么完全可以通过[官方网站](https://www.python.org/)下载并安装指定版本的Python。
+如果条件允许，建议使用`anaconda`或者`miniconda`之类的版本管理器来帮助你隔离和控制Python版本。当然，如果你希望比较简单地使用Python，那么完全可以通过Python官方网站下载并安装指定版本的Python。
+
+- anaconda: [https://www.anaconda.com/](https://www.anaconda.com/)
+- miniconda: [https://docs.conda.io/en/latest/miniconda.html](https://docs.conda.io/en/latest/miniconda.html)
+- python: [https://www.python.org/](https://www.python.org/)
 
 如果你没有使用`anaconda`或者`miniconda`，那么你需要手动安装`Pip`，一般而言会伴随Python自动安装，但并不排除部分同学安装并下载了纯净版的Python。如果你在命令行中无法找到`pip`或者`pip3`，那么你大概率需要[手动安装](https://pip.pypa.io/en/stable/installation/)了。
 
@@ -28,8 +32,8 @@ pip3 --version
 
 目前比较好用的包括`清华源`、`阿里源`等等，这里我以`清华源`为例，根据需要切换镜像源：
 
-- `anaconda/miniconda`: [https://mirror.tuna.tsinghua.edu.cn/help/anaconda/](https://mirror.tuna.tsinghua.edu.cn/help/anaconda/)
-- `pip`: [https://mirror.tuna.tsinghua.edu.cn/help/pypi/](https://mirror.tuna.tsinghua.edu.cn/help/pypi/)
+- anaconda/miniconda: [https://mirror.tuna.tsinghua.edu.cn/help/anaconda/](https://mirror.tuna.tsinghua.edu.cn/help/anaconda/)
+- pip: [https://mirror.tuna.tsinghua.edu.cn/help/pypi/](https://mirror.tuna.tsinghua.edu.cn/help/pypi/)
 
 各位可以根据实际网络环境，选择相对更优的镜像源，以提高库的获取速度。
 
@@ -37,8 +41,8 @@ pip3 --version
 
 在本教程中，我主要使用`Visual Studio Code`进行编码开发。而目前我所熟知的两个常用的Python程序编辑器是`PyCharm`和`Visual Studio Code`，前者对于企业而言需要付费，后者则可以免费使用。至于二者选择哪一种在本教程中是无所谓的，即便你使用`Windows记事本`工具也并不影响你完成项目。
 
-- `Visual Studio Code`: [https://code.visualstudio.com/](https://code.visualstudio.com/)
-- `PyCharm`: [https://code.visualstudio.com/](https://code.visualstudio.com/)
+- Visual Studio Code: [https://code.visualstudio.com/](https://code.visualstudio.com/)
+- PyCharm: [https://code.visualstudio.com/](https://code.visualstudio.com/)
 
 如果你使用`PyCharm`，则直接开箱即用。
 

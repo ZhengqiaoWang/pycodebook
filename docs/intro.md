@@ -67,7 +67,7 @@ sidebar_position: 1
 
 ## 作者
 
-[王政乔](www.zhengqiao.wang)
+[王政乔](https://www.zhengqiao.wang)
 
 ## 致谢名单
 

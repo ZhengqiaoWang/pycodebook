@@ -65,8 +65,10 @@ sidebar_position: 1
 
 我会根据实际贡献者(最终发布版本)撰写贡献者与致谢名单。
 
+## 作者
+
+[王政乔](www.zhengqiao.wang)
+
 ## 致谢名单
 
 按照贡献时间排名。
-
-- 王政乔(me@zhengqiao.wang)

@@ -23,17 +23,6 @@ sidebar_position: 1
 
 简单的来说，`GIL`的作用是在使用多线程时保证同时有且仅有一个线程执行。如此一来，保证了多个线程同时操作同一个对象时的各种读写问题，即在同一时刻只允许一个线程读写操作一个对象。
 
-## 为什么是GIL
-
-至于说为什么Python选择`GIL`，我觉得可能有几个方面原因：
-
-1. 对象采用引用计数的方式判定是否销毁(Python GC的机制)，这样就意味着多线程处理引用计数时很难兼顾性能和准确性。
-2. 在易用性和性能上取舍。对于有`GIL`的Python的入门门槛会大大降低，甚至一名小学生都可以很轻松的理解并写出一个Python程序。而Python绝大多数场景下是无需过分关注性能的，即使是有性能场景，也可以通过其他的方式解决：例如用C来写，Python来调用。
-3. 兼容非线程安全的C库，如此一来，Python的生态建立门槛会大大降低。
-
-:::tip [知识点：GC](docs/知识点/GC.md)
-:::
-
 ## GIL的工作原理
 
 在理解GIL的工作原理前，我们可以做一个简单的实验。当然，你无需立刻理解下面这部分代码的具体含义，因为我会介绍它的工作内容。
@@ -117,76 +106,63 @@ thread_id: 0 count: 2 1005223800 ns
 
 我们接下来阅读一下Python的源码，下载地址为：[https://www.python.org/downloads/release/python-3113/](https://www.python.org/downloads/release/python-3113/)，在`Python\ceval_gil.h`文件中可以找到相关的文档说明：
 
->    Notes about the implementation:
+> Notes about the implementation:
 > 
->    - The GIL is just a boolean variable (locked) whose access is protected
+> - The GIL is just a boolean variable (locked) whose access is protected
+>   by a mutex (gil_mutex), and whose changes are signalled by a condition
+>   variable (gil_cond). gil_mutex is taken for short periods of time,
+>   and therefore mostly uncontended.
 > 
->      by a mutex (gil_mutex), and whose changes are signalled by a condition
+> - In the GIL-holding thread, the main loop (PyEval_EvalFrameEx) must be
+>   able to release the GIL on demand by another thread. A volatile boolean
+>   variable (gil_drop_request) is used for that purpose, which is checked
+>   at every turn of the eval loop. That variable is set after a wait of
+>   `interval` microseconds on `gil_cond` has timed out.
+>   
+>     [Actually, another volatile boolean variable (eval_breaker) is used
+>   which ORs several conditions into one. Volatile booleans are
+>   sufficient as inter-thread signalling means since Python is run
+>   on cache-coherent architectures only.]
 > 
->      variable (gil_cond). gil_mutex is taken for short periods of time,
+> - A thread wanting to take the GIL will first let pass a given amount of
+>   time (`interval` microseconds) before setting gil_drop_request. This
+>   encourages a defined switching period, but doesn't enforce it since
+>   opcodes can take an arbitrary time to execute.
+>   
+>   The `interval` value is available for the user to read and modify
+>   using the Python API `sys.{get,set}switchinterval()`.
 > 
->      and therefore mostly uncontended.
-> 
->    - In the GIL-holding thread, the main loop (PyEval_EvalFrameEx) must be
-> 
->      able to release the GIL on demand by another thread. A volatile boolean
-> 
->      variable (gil_drop_request) is used for that purpose, which is checked
-> 
->      at every turn of the eval loop. That variable is set after a wait of
-> 
->      `interval` microseconds on `gil_cond` has timed out.
-> 
->       [Actually, another volatile boolean variable (eval_breaker) is used
-> 
->        which ORs several conditions into one. Volatile booleans are
-> 
->        sufficient as inter-thread signalling means since Python is run
-> 
->        on cache-coherent architectures only.]
-> 
->    - A thread wanting to take the GIL will first let pass a given amount of
-> 
->      time (`interval` microseconds) before setting gil_drop_request. This
-> 
->      encourages a defined switching period, but doesn't enforce it since
-> 
->      opcodes can take an arbitrary time to execute.
-> 
->      The `interval` value is available for the user to read and modify
-> 
->      using the Python API `sys.{get,set}switchinterval()`.
-> 
->    - When a thread releases the GIL and gil_drop_request is set, that thread
-> 
->      ensures that another GIL-awaiting thread gets scheduled.
-> 
->      It does so by waiting on a condition variable (switch_cond) until
-> 
->      the value of last_holder is changed to something else than its
-> 
->      own thread state pointer, indicating that another thread was able to
-> 
->      take the GIL.
-> 
->      This is meant to prohibit the latency-adverse behaviour on multi-core
-> 
->      machines where one thread would speculatively release the GIL, but still
-> 
->      run and end up being the first to re-acquire it, making the "timeslices"
-> 
->      much longer than expected.
-> 
->      (Note: this mechanism is enabled with FORCE_SWITCHING above)
+> - When a thread releases the GIL and gil_drop_request is set, that thread
+>   ensures that another GIL-awaiting thread gets scheduled.
+>   It does so by waiting on a condition variable (switch_cond) until
+>   the value of last_holder is changed to something else than its
+>   own thread state pointer, indicating that another thread was able to
+>   take the GIL.
+>   
+>     This is meant to prohibit the latency-adverse behaviour on multi-core
+>   machines where one thread would speculatively release the GIL, but still
+>   run and end up being the first to re-acquire it, making the "timeslices"
+>   much longer than expected.
+>   
+>     (Note: this mechanism is enabled with FORCE_SWITCHING above)
 
 我们可以在其中发现几个关键点，这在一定程度上可以帮助我们理解GIL的工作原理和应用场景：
 
 1. GIL是一个受锁保护的bool变量。
-
 2. Python鼓励线程及时释放GIL,但不强制要求。这也就保证了多个线程的分片执行，也让我们感觉Python的多线程是真的一样。在实现代码中，我们注意到默认的间隔`DEFAULT_INTERVAL`是`5000微秒`，当然，这个值可能随着GIL的申请而发生变化。
-
 3. 多个线程通过等待条件变量的方式抢占GIL，这就意味着抢占结果具有一定的随机性。
 
 :::tip 条件变量
 条件变量并发编程中用来协调多个线程同步的机制，是`C/C++`的一种常用用法。有兴趣的同学可以自行搜索，本教程不进行讲解。
+:::
+
+## 为什么是GIL
+
+至于说为什么Python选择`GIL`，我觉得可能有几个方面原因：
+
+1. 对象采用引用计数的方式判定是否销毁(Python GC的机制)，这样就意味着多线程处理引用计数时很难兼顾性能和准确性。
+2. 在易用性和性能上取舍。对于有`GIL`的Python的入门门槛会大大降低，甚至一名小学生都可以很轻松的理解并写出一个Python程序。而Python绝大多数场景下是无需过分关注性能的，即使是有性能场景，也可以通过其他的方式解决：例如用C来写，Python来调用。
+3. 兼容非线程安全的C库，如此一来，Python的生态建立门槛会大大降低。
+
+:::tip [知识点：GC](docs/知识点/GC.md)
 :::

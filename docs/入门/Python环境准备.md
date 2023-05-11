@@ -53,3 +53,27 @@ pip3 --version
 - magicstack.MagicPython
 
 三个插件即可。
+
+## HelloWorld
+
+程序员们总能使用各式各样的语言和方法输出`HelloWorld`，接下来我们就尝试精通利用Python输出`HelloWorld`：
+
+在任意位置新建`helloworld.py`文件，打开并编辑：
+
+```python
+print("Hello World")
+```
+
+然后我们可以在控制台执行它了：
+
+```shell
+python3 helloworld.py
+```
+
+最终得到我们想要的结果：
+
+```text
+Hello World
+```
+
+恭喜我们，给自己一点掌声吧，没用的技能又增加了。

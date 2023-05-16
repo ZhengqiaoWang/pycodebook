@@ -20,7 +20,7 @@
     "@mdx-js/react": "^1.6.22",
     "@saucelabs/theme-github-codeblock": "github:ZhengqiaoWang/docusaurus-theme-github-codeblock#remove-url-import",
     "clsx": "^1.2.1",
-    "plugin-image-zoom": "github:flexanalytics/plugin-image-zoom",
+    "plugin-image-zoom": "github:ZhengqiaoWang/plugin-image-zoom",
     "prism-react-renderer": "^1.3.5",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"

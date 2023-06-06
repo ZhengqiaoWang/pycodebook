@@ -1,60 +1,59 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
-const lightCodeTheme = require('prism-react-renderer/themes/github');
-const darkCodeTheme = require('prism-react-renderer/themes/dracula');
+const lightCodeTheme = require("prism-react-renderer/themes/github");
+const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: '跟着项目学Python',
-  tagline: '跟着项目学Python',
-  favicon: 'img/favicon.ico',
+  title: "跟着项目学Python",
+  tagline: "跟着项目学Python",
+  favicon: "img/favicon.ico",
 
   // Set the production url of your site here
-  url: 'https://pycodebook.zhengqiao.wang/',
+  url: "https://pycodebook.zhengqiao.wang/",
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/',
+  baseUrl: "/",
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'ZhengqiaoWang', // Usually your GitHub org/user name.
-  projectName: 'pycodebook', // Usually your repo name.
+  organizationName: "ZhengqiaoWang", // Usually your GitHub org/user name.
+  projectName: "pycodebook", // Usually your repo name.
   trailingSlash: false,
 
-  onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
+  onBrokenLinks: "throw",
+  onBrokenMarkdownLinks: "warn",
 
   // Even if you don't use internalization, you can use this field to set useful
   // metadata like html lang. For example, if your site is Chinese, you may want
   // to replace "en" with "zh-Hans".
   i18n: {
-    defaultLocale: 'zh-Hans',
-    locales: ['zh-Hans'],
+    defaultLocale: "zh-Hans",
+    locales: ["zh-Hans"],
   },
 
-  plugins:[
+  plugins: [
     [
-      require.resolve('@easyops-cn/docusaurus-search-local'),
+      require.resolve("@easyops-cn/docusaurus-search-local"),
       {
         hashed: true,
-        language: ['en', 'zh'],
-      }
+        language: ["en", "zh"],
+      },
     ],
-    'plugin-image-zoom'
+    "plugin-image-zoom",
   ],
 
   presets: [
     [
-      'classic',
+      "classic",
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
-          sidebarPath: require.resolve('./sidebars.js'),
+          sidebarPath: require.resolve("./sidebars.js"),
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/ZhengqiaoWang/pycodebook/tree/master/',
+          editUrl: "https://github.com/ZhengqiaoWang/pycodebook/tree/master/",
         },
         // blog: {
         //   showReadingTime: true,
@@ -64,7 +63,7 @@ const config = {
         //     'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
         // },
         theme: {
-          customCss: require.resolve('./src/css/custom.css'),
+          customCss: require.resolve("./src/css/custom.css"),
         },
       }),
     ],
@@ -74,54 +73,54 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       // Replace with your project's social card
-      image: 'img/docusaurus-social-card.jpg',
+      image: "img/docusaurus-social-card.jpg",
       navbar: {
-        title: '跟着项目学Python',
+        title: "跟着项目学Python",
         logo: {
-          alt: '跟着项目学Python',
-          src: 'img/logo.svg',
+          alt: "跟着项目学Python",
+          src: "img/logo.svg",
         },
         items: [
           {
-            type: 'docSidebar',
-            sidebarId: 'tutorialSidebar',
-            position: 'left',
-            label: '教程',
+            type: "docSidebar",
+            sidebarId: "tutorialSidebar",
+            position: "left",
+            label: "教程",
           },
           // {to: '/blog', label: 'Blog', position: 'left'},
           {
-            href: 'https://github.com/ZhengqiaoWang/pycodebook',
-            label: 'GitHub',
-            position: 'right',
+            href: "https://github.com/ZhengqiaoWang/pycodebook",
+            label: "GitHub",
+            position: "right",
           },
         ],
       },
       footer: {
-        style: 'dark',
+        style: "dark",
         links: [
           {
-            title: '文档',
+            title: "文档",
             items: [
               {
-                label: '教程',
-                to: '/docs/intro',
+                label: "教程",
+                to: "/docs/intro",
               },
             ],
           },
           {
-            title: '社区',
+            title: "社区",
             items: [
               {
-                label: 'Stack Overflow',
-                href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+                label: "Stack Overflow",
+                href: "https://stackoverflow.com/questions/tagged/docusaurus",
               },
               {
-                label: 'Discord',
-                href: 'https://discordapp.com/invite/docusaurus',
+                label: "Discord",
+                href: "https://discordapp.com/invite/docusaurus",
               },
               {
-                label: 'Twitter',
-                href: 'https://twitter.com/docusaurus',
+                label: "Twitter",
+                href: "https://twitter.com/docusaurus",
               },
             ],
           },
@@ -139,14 +138,15 @@ const config = {
           //   ],
           // },
         ],
-        copyright: `Copyright © ${String((new Date().getFullYear()))} 跟着项目学Python, pycodebook Built with Docusaurus.`,
+        copyright: `Copyright © ${String(
+          new Date().getFullYear()
+        )} 跟着项目学Python, pycodebook Built with Docusaurus.`,
       },
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
       },
     }),
-    
 };
 
 module.exports = config;
